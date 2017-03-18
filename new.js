@@ -1,22 +1,38 @@
 var fs = require('fs');
-var request = require('request');
+var originRequest = require('request');
 var cheerio = require('cheerio');
-var sleep = require('sleep');
+var iconv = require('iconv-lite')
+// var sleep = require('sleep');
 var url = require('url');
 
 var firstUrl = 'http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2015/index.html';
 
 
 var total = 1000;
+var headers = {
+  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.65 Safari/537.36'
+}
+
+function request(url, callback) {
+  var options = {
+      url: url,
+      encoding: null,
+      //代理服务器
+      //proxy: 'http://xxx.xxx.xxx.xxx:8888',
+      headers: headers
+    }
+    originRequest(options, callback);
+}
 
 // 收集一级省市
 
 function sendRequest(url, callback) {
-  sleep.msleep(1000);
+  // sleep.msleep(1000);
   console.log(url);
   request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      var $ = cheerio.load(body);
+      var html = iconv.decode(body, 'gb2312')
+      var $ = cheerio.load(html);
       callback($);
     } else {
       console.log('[请求失败] - ', url);
@@ -58,7 +74,7 @@ function first() {
         // second(obj);
       }
     });
-    cosole.log(dataObject);
+    console.log(dataObject);
     // console.log('[success] - 收集' + list.length + '个一级省市');
     // second(list);
   });
