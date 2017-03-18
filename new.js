@@ -55,8 +55,12 @@ function sendRequest(url, callback) {
 }
 
 function getUrl(path, target) {
-  return url.resolve(path, target);
+  if (path && target) {
+    return url.resolve(path, target);
+  }
+  return '';
 }
+
 
 var dataObject = {};
 var regName = /^\D+$/;
@@ -141,7 +145,7 @@ function third(first, second) {
 }
 
 function five(first, second, third) {
-  console.log('[办事处、镇级] - ', item.name, '处理中');
+  console.log('[办事处、镇级]-', third.name, '处理中');
   sendRequest(third.url, function($) {
     if (!$) {
       return;
@@ -157,7 +161,7 @@ function five(first, second, third) {
 }
 
 function six(first, second, third, four) {
-  console.log('[委会级] - ', item.name, '处理中');
+  console.log('[委会级] - ', four.name, '处理中');
   sendRequest(four.url, function($) {
     if (!$) {
       return;
