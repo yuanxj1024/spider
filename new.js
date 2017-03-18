@@ -162,7 +162,7 @@ function six(first, second, third, four) {
     if (!$) {
       return;
     }
-    $('.towntr a').each(function() {
+    $('.villagetr td').each(function() {
       var self = $(this);
       var obj = getObj(self, four.url);
       if (obj) {
